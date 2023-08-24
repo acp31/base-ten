@@ -1,95 +1,46 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-
-export default function Home() {
+"use client";
+import { Grid, Container, Tabs } from "@mantine/core";
+import Search from "@/features/Search";
+import CompanyList from "@/features/CompanyList";
+import { useCompanies } from "@/hooks/useCompany";
+import { IconFileUpload, IconReportSearch } from "@tabler/icons-react";
+import DropZone from "@/features/DropZone";
+import { useFinacialStatements } from "@/hooks/useFinancialStatements";
+function Home() {
+  const { searchTerm, handleSearch, isLoading } = useCompanies();
+  const { handleUploadData } = useFinacialStatements();
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <Container my={"md"} sx={{ minHeight: 500 }}>
+      <Tabs defaultValue="search" sx={{ marginBottom: 100 }}>
+        <Tabs.List>
+          <Tabs.Tab value="search" icon={<IconReportSearch size="0.8rem" />}>
+            Search Companies
+          </Tabs.Tab>
+          <Tabs.Tab value="upload" icon={<IconFileUpload size="0.8rem" />}>
+            File Upload
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="search" pt="xs">
+          <Grid>
+            <Grid.Col xs={12}>
+              {" "}
+              <Search query={searchTerm.query} handleSearch={handleSearch} />
+            </Grid.Col>
+            <Grid.Col xs={12}>
+              <CompanyList
+                companies={searchTerm.results}
+                isLoading={isLoading}
+              />
+            </Grid.Col>
+          </Grid>
+        </Tabs.Panel>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+        <Tabs.Panel value="upload" pt="xs">
+          <DropZone handleUpload={handleUploadData} />
+        </Tabs.Panel>
+      </Tabs>
+    </Container>
+  );
 }
+
+export default Home;

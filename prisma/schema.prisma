@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Company {
+  id             Int        @id @default(autoincrement())
+  name           String
+  industry       String[]
+  business_model String
+  hq_location    String
+  logo           String?
+  Finances       Finances[]
+}
+
+model Finances {
+  id             Int       @id @default(autoincrement())
+  company_id     Int
+  data_period    String?
+  revenue        Float?
+  burn           Float?
+  gp_pct         Float?
+  gp_amount      Int?
+  ebitda         Float?
+  cash           Float?
+  ltv            Float?
+  cac            Int?
+  arpu           Int?
+  customer_count Int?
+  next_fundraise DateTime?
+  data_date      DateTime
+  company        Company   @relation(fields: [company_id], references: [id])
+}
+
+model User {
+  id         Int     @id @default(autoincrement())
+  email      String  @unique
+  first_name String?
+  last_name  String?
+}
