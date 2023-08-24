@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "jest --watchAll",
     "ci-test": "CI=true jest --verbose",
-    "coverage": "jest --verbose --coverage --watchAll=false"
+    "coverage": "jest --verbose --coverage --watchAll=false",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
