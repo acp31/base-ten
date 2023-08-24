@@ -26,7 +26,7 @@ export type FinancialStatement = {
   data_date: string;
 }
 
-export type FinancialStatementUpload = {
+export type FinancialStatementUploadSheet = {
   id: number;
   data_period?: string;
   revenue?: number;
@@ -39,8 +39,8 @@ export type FinancialStatementUpload = {
   cac?: number;
   arpu?: number;
   customer_count?: number;
-  next_fundraise?: number;
-  data_date?: number;
+  next_fundraise: number;
+  data_date: number;
 }
 
 export type FinancialStatementCreate = {
@@ -56,7 +56,7 @@ export type FinancialStatementCreate = {
   cac?: number;
   arpu?: number;
   customer_count?: number;
-  next_fundraise?: Date;
+  next_fundraise: Date;
   data_date: Date;
 }
 

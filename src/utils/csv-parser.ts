@@ -1,4 +1,4 @@
-import { FinancialStatementUpload } from '@/models';
+import { FinancialStatementUploadSheet } from '@/models';
 import * as XLSX from 'xlsx'
 
 function ExcelDateToJSDate(date: number) {
@@ -6,9 +6,9 @@ function ExcelDateToJSDate(date: number) {
   return new Date(Math.round((date - 25569) * 86400 * 1000))
 }
 
-const formatExcelDates = (nextFundraise?: number, dataDate?: number) => {
-  const fundraiseDateString = nextFundraise ? ExcelDateToJSDate(nextFundraise) : undefined
-  const dataDateString = dataDate ? ExcelDateToJSDate(dataDate) : undefined
+const formatExcelDates = (nextFundraise: number, dataDate: number) => {
+  const fundraiseDateString = ExcelDateToJSDate(nextFundraise)
+  const dataDateString = ExcelDateToJSDate(dataDate)
   return { fundraiseDateString, dataDateString }
 }
 
@@ -17,7 +17,7 @@ export const spreadSheetToJSON = async (file: File) => {
   const workbook = XLSX.read(arrayBuffer)
   const companyData = workbook.Sheets
   const worksheet = companyData['Company Data']
-  var headers = {};
+  var headers = {} as any;
   var data = [] as any[];
   for (const item in worksheet) {
     if (item[0] === '!') continue;
@@ -35,9 +35,8 @@ export const spreadSheetToJSON = async (file: File) => {
   }
   data.shift();
   data.shift();
-  console.log('data', data)
 
-  const res = data.map((item: FinancialStatementUpload) => {
+  const res = data.map((item: FinancialStatementUploadSheet) => {
     const { id: company_id,
       data_period,
       revenue,
