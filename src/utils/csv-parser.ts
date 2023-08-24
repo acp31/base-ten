@@ -17,7 +17,7 @@ export const spreadSheetToJSON = async (file: File) => {
   const workbook = XLSX.read(arrayBuffer)
   const companyData = workbook.Sheets
   const worksheet = companyData['Company Data']
-  var headers = {};
+  var headers = {} as any;
   var data = [] as any[];
   for (const item in worksheet) {
     if (item[0] === '!') continue;
