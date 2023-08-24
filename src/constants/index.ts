@@ -1,7 +1,7 @@
 // URLS
 
 export const BASE_LOCAL = 'http://localhost:3000'
-export const BASE_PROD = 'https://base-ten.vercel.app'
+export const BASE_PROD = 'https://base-ten-pearl.vercel.app'
 const environment = process.env.NODE_ENV
 
 export const BASE_URL = environment === 'production' ? BASE_PROD : BASE_LOCAL
