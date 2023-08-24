@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { Company, FinancialStatement, FinancialStatementCreate, FinancialStatementProps, FinancialStatementUpload } from '@/models'
+import { Company, FinancialStatement, FinancialStatementCreate, FinancialStatementProps, FinancialStatementUploadSheet } from '@/models'
 
 export const getAllCompanies = async () => {
   return await prisma.company.findMany()
