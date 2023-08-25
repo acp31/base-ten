@@ -1,63 +1,10 @@
 "use client";
 
 import { useCompany } from "@/hooks/useCompany";
-import {
-  createStyles,
-  rem,
-  TextInput,
-  Container,
-  Button,
-  Center,
-  Notification,
-} from "@mantine/core";
+import { TextInput, Container, Button, Center } from "@mantine/core";
 import { useCallback, useState } from "react";
-import { IconCheck, IconX } from "@tabler/icons-react";
-const useStyles = createStyles((theme) => ({
-  root: {
-    position: "relative",
-  },
-
-  input: {
-    height: rem(54),
-    paddingTop: rem(18),
-  },
-
-  label: {
-    position: "absolute",
-    pointerEvents: "none",
-    fontSize: theme.fontSizes.xs,
-    paddingLeft: theme.spacing.sm,
-    paddingTop: `calc(${theme.spacing.sm} / 2)`,
-    zIndex: 1,
-  },
-}));
-
-const Notifications = ({
-  type,
-  message,
-}: {
-  type: string;
-  message: string;
-}) => {
-  if (!message || !message.length) return null;
-  let notification = (
-    <Notification
-      icon={<IconCheck size="1.1rem" />}
-      color="teal"
-      title="Teal notification"
-    >
-      {message}
-    </Notification>
-  );
-  if (type === "error") {
-    notification = (
-      <Notification icon={<IconX size="1.1rem" />} color="red">
-        {message}
-      </Notification>
-    );
-  }
-  return <>{notification}</>;
-};
+import Notifications from "@/components/Notifications";
+import { useStyles } from "./styles";
 
 export default function CreateCompany() {
   const { classes } = useStyles();

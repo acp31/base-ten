@@ -3,10 +3,10 @@
 import { TextInput, Container, Button, Center, Grid } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useFinacialStatements } from "@/hooks/useFinancialStatements";
-import Notifications from "./components/Notifications";
 import useStyles from "./styles";
 import { useForm } from "@mantine/form";
 import { FinancialStatementCreate } from "@/models";
+import Notifications from "@/components/Notifications";
 
 export default function CreateFinancialData({
   companyId,
