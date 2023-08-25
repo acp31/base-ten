@@ -51,10 +51,10 @@ export default function DropZone({ handleUpload }: DropzoneProps) {
 
         <div>
           <Text size="xl" inline>
-            Drag images here or click to select files
+            Drag file here or click to select file
           </Text>
           <Text size="sm" color="dimmed" inline mt={7}>
-            Attach as many files as you like
+            {`Please name file "Company Data"`}
           </Text>
         </div>
       </Group>

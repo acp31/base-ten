@@ -1,12 +1,34 @@
 "use client";
 import { FinancialStatement } from "@/models";
 import { Group, Text, Table } from "@mantine/core";
+import TableHeaders from "./components/Header";
+import LoadingSkeletons from "@/components/Skeletons";
 
 interface TableProps {
   statements?: FinancialStatement[];
+  isLoading: boolean;
 }
 
-export default function FinancialStatementTable({ statements }: TableProps) {
+const headers = [
+  "Data Date",
+  "Data Period",
+  "Revenue",
+  "Burn",
+  "GP PCT",
+  "GP Amount",
+  "Ebitda",
+  "Cash",
+  "LTV",
+  "CAC",
+  "ARPU",
+  "# Customers",
+  "Next Funraise Date",
+];
+
+export default function FinancialStatementTable({
+  statements,
+  isLoading,
+}: TableProps) {
   const rows = (statements || ([] as FinancialStatement[])).map((statement) => {
     const {
       id,
@@ -122,24 +144,10 @@ export default function FinancialStatementTable({ statements }: TableProps) {
   });
   return (
     <Table sx={{ minWidth: 800, marginTop: 32 }} verticalSpacing="sm">
-      <thead>
-        <tr>
-          <th>Data Date</th>
-          <th>Data Period</th>
-          <th>Revenue</th>
-          <th>Burn</th>
-          <th>GP PCT</th>
-          <th>GP Amount</th>
-          <th>Ebitda</th>
-          <th>Cash</th>
-          <th>LTV</th>
-          <th>CAC</th>
-          <th>ARPU</th>
-          <th># Customers</th>
-          <th>Next Funraise Date</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
+      <TableHeaders headers={headers} />
+      <tbody>
+        {isLoading ? <LoadingSkeletons rows={10} columns={13} /> : rows}
+      </tbody>
     </Table>
   );
 }

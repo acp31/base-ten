@@ -2,7 +2,7 @@
 import React from "react";
 import { Table, ScrollArea } from "@mantine/core";
 import { Company } from "@/models";
-import LoadingSkeletons from "./components/LoadingSkeletons";
+import LoadingSkeletons from "@/components/Skeletons";
 import ListItems from "./components/ListItems";
 
 function CompanyList({
@@ -25,7 +25,7 @@ function CompanyList({
         </thead>
         <tbody>
           {isLoading ? (
-            <LoadingSkeletons />
+            <LoadingSkeletons rows={10} columns={4} />
           ) : (
             <ListItems companies={companies} />
           )}

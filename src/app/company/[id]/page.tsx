@@ -37,16 +37,37 @@ export default function CompanyPage({ params }: Props) {
     setCompanyId(params.id);
   }, [params.id, setCompanyId]);
   const { Finances } = company;
-  if (isLoading || !company)
-    return (
+  let data = (
+    <div className={classes.root}>
+      <Container sx={{ minHeight: 300, minWidth: 1200 }}>
+        <Center>No Finanical Data found</Center>
+      </Container>
+    </div>
+  );
+
+  if (Finances && Finances.length) {
+    data = (
+      <>
+        <SimpleGrid cols={3} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
+          {Finances ? <StatsData statements={Finances} /> : null}
+        </SimpleGrid>
+        <FinancialStatementTable statements={Finances} isLoading={isLoading} />
+      </>
+    );
+  }
+
+  if (isLoading || !company) {
+    data = (
       <div className={classes.root}>
-        <Center>
-          <Container sx={{ minHeight: 500, minWidth: 1200 }}>
+        <Container sx={{ minHeight: 300, minWidth: 1200 }}>
+          <Center>
             <Loader />
-          </Container>
-        </Center>
+          </Center>
+        </Container>
       </div>
     );
+  }
+
   return (
     <div className={classes.root}>
       <Container sx={{ minHeight: 500, minWidth: 1200 }}>
@@ -65,10 +86,7 @@ export default function CompanyPage({ params }: Props) {
               ))}
           </Text>
         </Container>
-        <SimpleGrid cols={3} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
-          {Finances ? <StatsData statements={Finances} /> : null}
-        </SimpleGrid>
-        <FinancialStatementTable statements={Finances} />
+        {data}
       </Container>
     </div>
   );

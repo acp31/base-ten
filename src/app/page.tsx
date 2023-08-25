@@ -3,9 +3,14 @@ import { Grid, Container, Tabs } from "@mantine/core";
 import Search from "@/features/Search";
 import CompanyList from "@/features/CompanyList";
 import { useCompanies } from "@/hooks/useCompany";
-import { IconFileUpload, IconReportSearch } from "@tabler/icons-react";
+import {
+  IconFileUpload,
+  IconReportSearch,
+  IconCheckupList,
+} from "@tabler/icons-react";
 import DropZone from "@/features/DropZone";
 import { useFinacialStatements } from "@/hooks/useFinancialStatements";
+import CreateCompany from "@/features/CreateCompany";
 function Home() {
   const { searchTerm, handleSearch, isLoading } = useCompanies();
   const { handleUploadData } = useFinacialStatements();
@@ -18,6 +23,9 @@ function Home() {
           </Tabs.Tab>
           <Tabs.Tab value="upload" icon={<IconFileUpload size="0.8rem" />}>
             File Upload
+          </Tabs.Tab>
+          <Tabs.Tab value="create" icon={<IconCheckupList size="0.8rem" />}>
+            Create Company
           </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="search" pt="xs">
@@ -37,6 +45,9 @@ function Home() {
 
         <Tabs.Panel value="upload" pt="xs">
           <DropZone handleUpload={handleUploadData} />
+        </Tabs.Panel>
+        <Tabs.Panel value="create" pt="xs">
+          <CreateCompany />
         </Tabs.Panel>
       </Tabs>
     </Container>

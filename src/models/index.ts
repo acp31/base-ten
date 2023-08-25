@@ -8,6 +8,15 @@ export type Company = {
   Finances?: FinancialStatement[]
 }
 
+export type CreateCompany = {
+  name: string;
+  industry: string[];
+  business_model: string;
+  hq_location: string;
+  logo?: string;
+  Finances?: FinancialStatement[]
+}
+
 export type FinancialStatement = {
   id: number;
   company_id: number;
