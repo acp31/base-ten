@@ -1,7 +1,7 @@
-import { Company } from "@/models/index";
+import { Company, CreateCompany } from "@/models/index";
 import React, { useState, useEffect, useCallback } from "react";
-import { FETCH_COMPANY_ERROR, FETCH_COMPANIES_ERROR } from "@/constants/index";
-import { getAllCopmpanies, getAllCompanyFinanicalDataByCompanyId } from "@/services/companiesApi";
+import { FETCH_COMPANY_ERROR, FETCH_COMPANIES_ERROR, CREATE_COMPANY_ERROR } from "@/constants/index";
+import { getAllCopmpanies, getAllCompanyFinanicalDataByCompanyId, createCompany } from "@/services/companiesApi";
 
 const useCompany = () => {
   const [company, setCompany] = useState({} as Company);
@@ -12,6 +12,34 @@ const useCompany = () => {
     type: '',
     content: ''
   });
+
+  const createCompanyHandler = useCallback((newCompany: CreateCompany) => {
+    const { name, industry, business_model, hq_location, logo } = newCompany
+    setIsLoading(true)
+    setError(false);
+    if (!name || !industry.length || business_model.length || hq_location.length) {
+      setMessage({ type: 'error', content: 'Missing Data Fields!' });
+      setError(true);
+      setIsLoading(false);
+      return
+    }
+    const createCompanyWithFetch = async () => {
+      const data = await createCompany(name, industry, business_model, hq_location, logo)
+      if (data !== CREATE_COMPANY_ERROR) {
+        setCompany(data);
+        setIsLoading(false);
+        setMessage({ type: 'success', content: 'Created Company!' });
+        setTimeout(() => {
+          setMessage({ type: '', content: '' });
+        }, 5000)
+      } else {
+        setError(true);
+        setIsLoading(false);
+        setMessage({ type: 'error', content: data });
+      }
+    }
+    createCompanyWithFetch()
+  }, [])
 
   useEffect(() => {
     if (!companyId || !companyId.length) return;
@@ -32,7 +60,7 @@ const useCompany = () => {
     }
     fetchCompany();
   }, [companyId])
-  return { company, error, isLoading, message, setCompanyId }
+  return { company, error, isLoading, message, setCompanyId, createCompanyHandler }
 }
 
 

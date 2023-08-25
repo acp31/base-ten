@@ -14,10 +14,16 @@ export default function Error({
     console.error(error);
   }, [error]);
   return (
-    <Center maw={400} h={100} mx="auto">
-      <Alert icon={<IconAlertCircle size="1rem" />} title="Error!" color="red">
-        Error Fetch Company Data, Please try again.
-      </Alert>
-    </Center>
+    <Container sx={{ minHeight: 300, minWidth: 1200 }}>
+      <Center maw={400} h={100} mx="auto">
+        <Alert
+          icon={<IconAlertCircle size="1rem" />}
+          title="Error!"
+          color="red"
+        >
+          Error Fetching Company Data, Please try again.
+        </Alert>
+      </Center>
+    </Container>
   );
 }
