@@ -23,8 +23,9 @@ const useCompany = () => {
       setIsLoading(false);
       return
     }
+    const industryArr = Array.isArray(industry) ? industry : [industry]
     const createCompanyWithFetch = async () => {
-      const data = await createCompany(name, industry, business_model, hq_location, logo)
+      const data = await createCompany(name, industryArr, business_model, hq_location, logo)
       if (data !== CREATE_COMPANY_ERROR) {
         setCompany(data);
         setIsLoading(false);

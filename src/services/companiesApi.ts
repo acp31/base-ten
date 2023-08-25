@@ -1,5 +1,5 @@
-import { FETCH_COMPANY_ERROR, FETCH_COMPANIES_ERROR, CREATE_COMPANY_ERROR, DELETE_COMPANY_ERROR } from "@/constants";
-import { Company } from "@/models";
+import { FETCH_COMPANY_ERROR, FETCH_COMPANIES_ERROR, CREATE_COMPANY_ERROR, DELETE_COMPANY_ERROR, CREATE_COMPANIES_ERROR } from "@/constants";
+import { Company, CreateCompanyMany } from "@/models";
 import { getCompanyApiUrl } from "@/utils/helpers";
 
 export const getAllCopmpanies = async () => {
@@ -31,6 +31,25 @@ export const createCompany = async (name: string, industry: string[], businessMo
   } catch (error) {
     console.error(error)
     const errMsg = CREATE_COMPANY_ERROR
+    return errMsg
+  }
+}
+
+export const createCompanies = async (companiesData: CreateCompanyMany[]) => {
+  try {
+    const url = getCompanyApiUrl()
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(companiesData)
+    })
+    const { companies } = await res.json()
+    return companies as Company[]
+  } catch (error) {
+    console.error(error)
+    const errMsg = CREATE_COMPANIES_ERROR
     return errMsg
   }
 }
