@@ -49,7 +49,7 @@ const computeStats = (statements: FinancialStatement[]) => {
     } = statement;
     let multiple = 1;
     if (data_period === "quarter") multiple = 4;
-    if (data_period === "monthly") multiple = 12;
+    if (data_period === "month") multiple = 12;
     const values = [
       revenue,
       burn,

@@ -34,6 +34,9 @@ export const UPDATE_COMPANY_SUCCESS = 'Company successfuly updated'
 export const CREATE_COMPANY_ERROR = 'Error creating company'
 export const CREATE_COMPANY_SUCCESS = 'Company successfuly created'
 
+export const CREATE_COMPANIES_ERROR = 'Error creating companies'
+export const CREATE_COMPANIES_SUCCESS = 'Companies successfuly created'
+
 // ----------------- Financial Statements -----------------
 
 export const FETCH_FINANCIAL_STATEMENTS_ERROR = 'Error fetching financial statements'

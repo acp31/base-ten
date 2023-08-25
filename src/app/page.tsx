@@ -13,7 +13,7 @@ import { useFinacialStatements } from "@/hooks/useFinancialStatements";
 import CreateCompany from "@/features/CreateCompany";
 function Home() {
   const { searchTerm, handleSearch, isLoading } = useCompanies();
-  const { handleUploadData } = useFinacialStatements();
+  const { handleUploadData, handleStatementCreation } = useFinacialStatements();
   return (
     <Container my={"md"} sx={{ minHeight: 500 }}>
       <Tabs defaultValue="search" sx={{ marginBottom: 100 }}>
@@ -44,7 +44,7 @@ function Home() {
         </Tabs.Panel>
 
         <Tabs.Panel value="upload" pt="xs">
-          <DropZone handleUpload={handleUploadData} />
+          <DropZone handleUpload={handleStatementCreation} />
         </Tabs.Panel>
         <Tabs.Panel value="create" pt="xs">
           <CreateCompany />

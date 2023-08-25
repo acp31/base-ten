@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { Company, FinancialStatement, FinancialStatementCreate, FinancialStatementProps, FinancialStatementUploadSheet } from '@/models'
+import { Company, CreateCompanyMany, FinancialStatement, FinancialStatementCreate, FinancialStatementProps, FinancialStatementUploadSheet } from '@/models'
 
 export const getAllCompanies = async () => {
   return await prisma.company.findMany()
@@ -7,6 +7,10 @@ export const getAllCompanies = async () => {
 
 export const createCompany = async (name: string, industry: string[], businessModel: string, hqLocation: string, logo?: string) => {
   return await prisma.company.create({ data: { name, industry, business_model: businessModel, hq_location: hqLocation, logo } });
+}
+
+export const createCompanies = async (companies: CreateCompanyMany[]) => {
+  return await prisma.company.createMany({ data: companies });
 }
 
 export const getCompanyById = async (id: number) => {
@@ -34,7 +38,7 @@ export const getAllFinacialStatementsByCompanyId = async (id: number) => {
   return await prisma.finances.findMany({ where: { id } });
 }
 
-export const createFinancialStatements = async (statements: FinancialStatementCreate) => {
+export const createFinancialStatements = async (statements: FinancialStatementCreate[]) => {
   return await prisma.finances.createMany({ data: statements })
 }
 

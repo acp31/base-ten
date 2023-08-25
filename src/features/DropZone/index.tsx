@@ -3,10 +3,10 @@ import { Group, Text, useMantineTheme, rem } from "@mantine/core";
 import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
 import { Dropzone, MS_EXCEL_MIME_TYPE } from "@mantine/dropzone";
 import { spreadSheetToJSON } from "@/utils/csv-parser";
-import { FinancialStatementCreate } from "@/models";
+import { FinancialStatementCreate, CreateCompanyMany } from "@/models";
 
 interface DropzoneProps {
-  handleUpload: (x: FinancialStatementCreate[]) => void;
+  handleUpload: (x: FinancialStatementCreate[], y: CreateCompanyMany[]) => void;
 }
 
 export default function DropZone({ handleUpload }: DropzoneProps) {
@@ -16,8 +16,10 @@ export default function DropZone({ handleUpload }: DropzoneProps) {
       sx={{ marginTop: 32 }}
       onDrop={async (files) => {
         console.log("accepted files", files);
-        const data = await spreadSheetToJSON(files[0]);
-        handleUpload(data);
+        const { statementJSONData, companyJSONData } = await spreadSheetToJSON(
+          files[0]
+        );
+        handleUpload(statementJSONData, companyJSONData);
       }}
       onReject={(files) => console.error("rejected files", files)}
       accept={MS_EXCEL_MIME_TYPE}

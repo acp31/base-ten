@@ -1,4 +1,4 @@
-import { FinancialStatementUploadSheet } from '@/models';
+import { CreateCompany, FinancialStatementUploadSheet } from '@/models';
 import * as XLSX from 'xlsx'
 
 function ExcelDateToJSDate(date: number) {
@@ -12,18 +12,14 @@ const formatExcelDates = (nextFundraise: number, dataDate: number) => {
   return { fundraiseDateString, dataDateString }
 }
 
-export const spreadSheetToJSON = async (file: File) => {
-  const arrayBuffer = await file.arrayBuffer()
-  const workbook = XLSX.read(arrayBuffer)
-  const companyData = workbook.Sheets
-  const worksheet = companyData['Company Data']
-  var headers = {} as any;
-  var data = [] as any[];
+const handleWorksheetData = (worksheet: XLSX.WorkSheet) => {
+  const headers = {} as any;
+  const data = [] as any[];
   for (const item in worksheet) {
     if (item[0] === '!') continue;
-    var col = item.substring(0, 1);
-    var row = parseInt(item.substring(1));
-    var value = worksheet[item].v;
+    const col = item.substring(0, 1);
+    const row = parseInt(item.substring(1));
+    const value = worksheet[item].v;
     //store header names
     if (row == 1) {
       headers[col] = value;
@@ -35,40 +31,50 @@ export const spreadSheetToJSON = async (file: File) => {
   }
   data.shift();
   data.shift();
+  return data
+}
 
-  const res = data.map((item: FinancialStatementUploadSheet) => {
-    const { id: company_id,
-      data_period,
-      revenue,
-      burn,
-      gp_pct,
-      gp_amount,
-      ebitda,
-      cash,
-      ltv,
-      cac,
-      arpu,
-      customer_count,
-      next_fundraise,
-      data_date,
-    } = item
+const handleStatementData = (statementWorksheet: XLSX.WorkSheet) => {
+  const rawStatementWorksheetData = handleWorksheetData(statementWorksheet)
+  return rawStatementWorksheetData.map((item: FinancialStatementUploadSheet) => {
+    const { id: company_id, next_fundraise, data_date, ...rest } = item
     const { fundraiseDateString, dataDateString } = formatExcelDates(next_fundraise, data_date)
     return {
       company_id,
-      data_period,
-      revenue,
-      burn,
-      gp_pct,
-      gp_amount,
-      ebitda,
-      cash,
-      ltv,
-      cac,
-      arpu,
-      customer_count,
       next_fundraise: fundraiseDateString,
-      data_date: dataDateString
+      data_date: dataDateString,
+      ...rest
     }
   })
-  return res
 }
+
+const handleCompanyData = (metaDataWoksheet: XLSX.WorkSheet) => {
+  const rawStatementWorksheetData = handleWorksheetData(metaDataWoksheet)
+  return rawStatementWorksheetData.map((item: CreateCompany) => {
+    const {
+      industry,
+      Finances,
+      ...rest
+    } = item
+    const industryArr = !Array.isArray(industry) ? industry.split(',') : industry
+    return { industry: industryArr, ...rest }
+  })
+}
+
+const handleRawCompanyAndMetaData = (companyDataWorksheet: XLSX.WorkSheet, metaDataWorksheet: XLSX.WorkSheet) => {
+  const rawStatementWorksheetData = handleWorksheetData(companyDataWorksheet)
+  const rawMetaDataWorksheetData = handleWorksheetData(metaDataWorksheet)
+  const statementJSONData = handleStatementData(rawStatementWorksheetData)
+  const companyJSONData = handleCompanyData(rawMetaDataWorksheetData)
+  return { statementJSONData, companyJSONData }
+}
+
+export const spreadSheetToJSON = async (file: File) => {
+  const arrayBuffer = await file.arrayBuffer()
+  const workbook = XLSX.read(arrayBuffer)
+  const companyData = workbook.Sheets
+  const companyDataWorksheet = companyData['Company Data']
+  const metaDataWorksheet = companyData['Meta Data']
+  return handleRawCompanyAndMetaData(companyDataWorksheet, metaDataWorksheet)
+}
+

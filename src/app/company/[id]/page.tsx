@@ -1,5 +1,6 @@
 "use client";
 import CompanyBadge from "@/components/CompanyBadge";
+import CreateFinancialData from "@/features/CreateFinancialData";
 import FinancialStatementTable from "@/features/FinacialStatementTable";
 import StatsData from "@/features/FinanicalStats";
 import { useCompany } from "@/hooks/useCompany";
@@ -37,15 +38,20 @@ export default function CompanyPage({ params }: Props) {
     setCompanyId(params.id);
   }, [params.id, setCompanyId]);
   const { Finances } = company;
-  let data = (
-    <div className={classes.root}>
-      <Container sx={{ minHeight: 300, minWidth: 1200 }}>
-        <Center>No Finanical Data found</Center>
-      </Container>
-    </div>
-  );
+  let data = null;
+  if ((!isLoading && !Finances) || (Finances && !Finances.length)) {
+    data = (
+      <div className={classes.root}>
+        <Container sx={{ minHeight: 400, minWidth: 1200 }}>
+          <Center>
+            <CreateFinancialData companyId={company.id} />
+          </Center>
+        </Container>
+      </div>
+    );
+  }
 
-  if (Finances && Finances.length) {
+  if (Finances && Finances.length && !isLoading) {
     data = (
       <>
         <SimpleGrid cols={3} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
